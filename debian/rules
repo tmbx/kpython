@@ -1,0 +1,56 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+# export DH_VERBOSE=1
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+# Force use of default values for all ExtUtils::MakeMaker::prompt calls.
+export PERL_MM_USE_DEFAULT=1
+
+# Set the path to the Perl interpreter.
+ifndef PERL
+PERL = /usr/bin/perl
+endif
+
+
+clean:
+	dh_testdir
+	dh_testroot
+	
+	make clean
+        
+	dh_clean
+
+
+build:
+	dh_testdir
+	
+	make build
+	
+
+install: build
+	dh_testdir
+	dh_testroot
+	
+	make install DESTDIR=$(CURDIR)/debian/kpython DEBIAN=1
+	
+	
+binary-arch:
+binary-indep: install
+	dh_testdir
+	dh_testroot
+	dh_pysupport
+	dh_perl
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-arch binary-indep
+
+
+.PHONY: build clean binary-indep binary-arch binary install

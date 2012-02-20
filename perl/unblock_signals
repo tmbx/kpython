@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+
+use POSIX;
+
+# Print usage info
+sub usage
+{
+    print "Usage: unblock_signals <cmd> [<param>, <param>...]\n";
+}
+
+# Make sure there are at least one parameter (<cmd>)
+if ($#ARGV < 0)
+{
+    usage;
+    exit 1;
+}
+
+# Unblock all signals
+my $sigset = POSIX::SigSet->new;
+$sigset->fillset();
+if (!defined(sigprocmask(SIG_UNBLOCK, $sigset)))
+{
+    print "Chould not unblock signals.\n";
+    exit 2;
+}
+
+# Exec
+exec @ARGV;
+
+# Exec failed?!
+print "exec failed.\n";
+exit 3;
+

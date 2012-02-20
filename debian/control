@@ -1,0 +1,16 @@
+Source: kpython
+Section: teambox-internal
+Priority: optional
+Maintainer: 
+Build-Depends: debhelper (>= 5), python
+Build-Depends-Indep: python-support (>= 0.4), perl (>=5.8)
+Standards-Version: 3.7.2
+XS-Python-Version: all
+
+Package: kpython
+Architecture: any
+Depends: ${python:Depends}, ${perl:Depends}, python-pygresql, python-pgsql, patch
+XB-Python-Version: ${python:Versions}
+Description: Teambox Python libraries
+ This package contains standard Python code that we happen to use in several
+ Teambox programs.
